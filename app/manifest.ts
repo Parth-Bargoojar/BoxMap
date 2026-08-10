@@ -9,6 +9,12 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#4F46E5',
     background_color: '#F8FAFC',
     display: 'standalone',
+    protocol_handlers: [
+      {
+        protocol: 'web+boxmap',
+        url: '/search?q=%s',
+      },
+    ],
     icons: [
       { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
       { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
