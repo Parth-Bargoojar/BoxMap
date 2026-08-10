@@ -37,7 +37,10 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith('/sign-up') ||
     pathname.startsWith('/forgot-password')
   const isPublicRoute =
-    isAuthRoute || pathname.startsWith('/auth/callback') || pathname.startsWith('/api/')
+    isAuthRoute ||
+    pathname.startsWith('/auth/callback') ||
+    pathname.startsWith('/api/') ||
+    pathname === '/manifest.webmanifest'
 
   if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone()
