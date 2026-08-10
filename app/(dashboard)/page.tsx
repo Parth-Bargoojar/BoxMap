@@ -9,7 +9,13 @@ import { BoxGrid } from '@/components/boxes/box-grid'
 import { EmptyState } from '@/components/shared/empty-state'
 import { StatsSkeleton, BoxGridSkeleton } from '@/components/shared/loading-skeletons'
 import { Button } from '@/components/ui/button'
+import type { Metadata } from 'next'
 import { Plus, Package, Layers, MapPin } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  robots: { index: false, follow: false },
+}
 
 async function DashboardStatsSection() {
   const supabase = await createClient()

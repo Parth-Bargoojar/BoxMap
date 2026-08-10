@@ -7,7 +7,13 @@ import { BoxGrid } from '@/components/boxes/box-grid'
 import { EmptyState } from '@/components/shared/empty-state'
 import { BoxGridSkeleton } from '@/components/shared/loading-skeletons'
 import { Button } from '@/components/ui/button'
+import type { Metadata } from 'next'
 import { Plus } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'Boxes',
+  robots: { index: false, follow: false },
+}
 
 interface BoxesPageProps {
   searchParams: Promise<{

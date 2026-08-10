@@ -1,30 +1,13 @@
-'use client'
-
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+import type { Metadata } from 'next'
 import PageContainer from '@/components/layout/page-container'
-import { BoxForm, BoxFormProps } from '@/components/boxes/box-form'
-import { createBox } from '@/lib/services/boxes'
+import AddBoxClient from './add-box-client'
+
+export const metadata: Metadata = {
+  title: 'Add New Box',
+  robots: { index: false, follow: false },
+}
 
 export default function AddBoxPage() {
-  const router = useRouter()
-
-  const handleSubmit: BoxFormProps['onSubmit'] = async (data) => {
-    const newBox = await createBox({
-      name: data.name,
-      photo: data.photoFile,
-      room: data.room,
-      area: data.area,
-      position: data.position,
-      notes: data.notes,
-      items: data.items,
-    })
-
-    toast.success(`Box ${newBox.box_code} created successfully!`)
-    router.push(`/boxes/${newBox.id}`)
-    router.refresh()
-  }
-
   return (
     <PageContainer>
       <div className="space-y-6">
@@ -37,7 +20,7 @@ export default function AddBoxPage() {
           </p>
         </div>
 
-        <BoxForm onSubmit={handleSubmit} />
+        <AddBoxClient />
       </div>
     </PageContainer>
   )
