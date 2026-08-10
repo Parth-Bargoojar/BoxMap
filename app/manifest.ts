@@ -4,6 +4,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'BoxMap',
     short_name: 'BoxMap',
+    start_url: '/',
+    scope: '/',
     theme_color: '#4F46E5',
     background_color: '#F8FAFC',
     display: 'standalone',
