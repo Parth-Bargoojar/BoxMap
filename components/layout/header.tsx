@@ -1,44 +1,24 @@
-'use client'
-
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Plus, LogOut } from 'lucide-react'
-import { signOut } from '@/lib/supabase/client'
+import { ThemeToggle } from '@/components/theme/theme-toggle'
 
+/**
+ * Global chrome. Intentionally holds no primary action: "Add Box" lives once
+ * per context (page header on desktop, bottom-nav FAB on mobile) and sign-out
+ * lives in the sidebar and Settings.
+ */
 export default function Header() {
-  const router = useRouter()
-
-  const handleSignOut = async () => {
-    await signOut()
-    router.push('/sign-in')
-    router.refresh()
-  }
-
   return (
-    <header className="h-16 border-b border-border bg-surface px-4 md:px-6 flex items-center justify-between">
-      <div className="flex items-center gap-2 md:hidden">
-        <Link href="/" className="font-bold text-xl text-primary tracking-tight">
-          BoxMap
-        </Link>
-      </div>
+    <header className="glass-chrome sticky top-0 z-40 flex h-16 items-center justify-between border-b border-glass-hairline px-4 md:px-8">
+      <Link
+        href="/"
+        className="rounded-lg text-xl font-bold tracking-tight text-primary focus-visible:outline-none md:hidden"
+      >
+        BoxMap
+      </Link>
 
-      <div className="flex-1 hidden md:block">
-        <h2 className="text-sm font-semibold text-text-secondary">Know what&apos;s where.</h2>
-      </div>
+      <div className="hidden md:block" aria-hidden="true" />
 
-      <div className="flex items-center gap-3">
-        <Link href="/boxes/new">
-          <Button size="sm" className="gap-1 font-semibold">
-            <Plus className="h-4 w-4" />
-            <span className="hidden sm:inline">Add Box</span>
-          </Button>
-        </Link>
-
-        <Button variant="ghost" size="icon" title="Sign Out" onClick={handleSignOut}>
-          <LogOut className="h-4 w-4 text-text-muted hover:text-error" />
-        </Button>
-      </div>
+      <ThemeToggle />
     </header>
   )
 }

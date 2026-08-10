@@ -6,28 +6,33 @@ import PageContainer from '@/components/layout/page-container'
 import { BoxGrid } from '@/components/boxes/box-grid'
 import { EmptyState } from '@/components/shared/empty-state'
 import { BoxGridSkeleton } from '@/components/shared/loading-skeletons'
-import { Button } from '@/components/ui/button'
 import type { Metadata } from 'next'
-import { Plus } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Boxes',
   robots: { index: false, follow: false },
 }
 
+type SortOption = 'newest' | 'oldest' | 'name' | 'updated'
+
+const SORT_OPTIONS: { label: string; value: SortOption }[] = [
+  { label: 'Newest', value: 'newest' },
+  { label: 'Oldest', value: 'oldest' },
+  { label: 'Name', value: 'name' },
+  { label: 'Updated', value: 'updated' },
+]
+
 interface BoxesPageProps {
-  searchParams: Promise<{
-    sort?: 'newest' | 'oldest' | 'name' | 'updated'
-  }>
+  searchParams: Promise<{ sort?: SortOption }>
 }
 
-async function BoxesListSection({ sort = 'newest' }: { sort?: 'newest' | 'oldest' | 'name' | 'updated' }) {
+async function BoxesListSection({ sort = 'newest' }: { sort?: SortOption }) {
   const supabase = await createClient()
   const { boxes, total } = await getBoxes({ sort, limit: 100 }, supabase)
 
   if (total === 0) {
     return (
-      <div className="py-12 bg-surface rounded-xl border border-border">
+      <div className="glass rounded-2xl py-12 shadow-glass">
         <EmptyState
           title="Your storage is empty"
           description="Add your first box to start building your storage map."
@@ -40,9 +45,9 @@ async function BoxesListSection({ sort = 'newest' }: { sort?: 'newest' | 'oldest
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between text-xs text-text-muted font-medium px-1">
-        <span>Showing {boxes.length} of {total} boxes</span>
-      </div>
+      <p className="px-1 text-xs font-medium text-text-muted">
+        Showing {boxes.length} of {total} boxes
+      </p>
       <BoxGrid boxes={boxes} />
     </div>
   )
@@ -54,50 +59,40 @@ export default async function BoxesPage({ searchParams }: BoxesPageProps) {
 
   return (
     <PageContainer>
-      <div className="space-y-6 pb-8">
-        {/* Top Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-text-primary tracking-tight">
-              All Boxes
-            </h1>
-            <p className="text-sm text-text-secondary">View and manage your physical boxes</p>
-          </div>
-
-          <Link href="/boxes/new">
-            <Button className="gap-2 font-semibold">
-              <Plus className="h-4 w-4" />
-              Add Box
-            </Button>
-          </Link>
+      <div className="space-y-6">
+        {/* "Add Box" lives once per context: sidebar (md+) / bottom-nav FAB. */}
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+            All Boxes
+          </h1>
+          <p className="mt-1 text-sm text-text-secondary">
+            View and manage your physical boxes
+          </p>
         </div>
 
-        {/* Sorting Dropdown / Filter Bar */}
-        <div className="flex items-center justify-between bg-surface p-3 rounded-xl border border-border">
-          <span className="text-xs font-semibold text-text-secondary">Sort Boxes:</span>
-          <div className="flex items-center gap-2">
-            {[
-              { label: 'Newest', value: 'newest' },
-              { label: 'Oldest', value: 'oldest' },
-              { label: 'Name', value: 'name' },
-              { label: 'Updated', value: 'updated' },
-            ].map((opt) => (
+        <nav
+          aria-label="Sort boxes"
+          className="glass-subtle flex items-center gap-1 overflow-x-auto rounded-2xl p-1.5 shadow-glass"
+        >
+          {SORT_OPTIONS.map((opt) => {
+            const isActive = sort === opt.value
+            return (
               <Link
                 key={opt.value}
                 href={`/boxes?sort=${opt.value}`}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  sort === opt.value
-                    ? 'bg-primary text-white font-semibold'
-                    : 'text-text-secondary hover:bg-surface-secondary'
+                aria-current={isActive ? 'true' : undefined}
+                className={`shrink-0 rounded-xl px-3.5 py-2 text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                  isActive
+                    ? 'glass-strong font-semibold text-primary shadow-glass'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 {opt.label}
               </Link>
-            ))}
-          </div>
-        </div>
+            )
+          })}
+        </nav>
 
-        {/* Box Grid List */}
         <Suspense fallback={<BoxGridSkeleton count={6} />}>
           <BoxesListSection sort={sort} />
         </Suspense>

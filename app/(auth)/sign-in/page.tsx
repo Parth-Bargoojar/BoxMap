@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function SignInPage() {
   return (
-    <div className="w-full max-w-[420px] px-4 py-8">
+    <div className="w-full max-w-[420px] py-8">
       <SignInClient />
     </div>
   )

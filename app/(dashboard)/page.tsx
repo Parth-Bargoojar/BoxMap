@@ -8,13 +8,34 @@ import { SearchInput } from '@/components/search/search-input'
 import { BoxGrid } from '@/components/boxes/box-grid'
 import { EmptyState } from '@/components/shared/empty-state'
 import { StatsSkeleton, BoxGridSkeleton } from '@/components/shared/loading-skeletons'
-import { Button } from '@/components/ui/button'
 import type { Metadata } from 'next'
-import { Plus, Package, Layers, MapPin } from 'lucide-react'
+import { Package, Layers, MapPin, type LucideIcon } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
   robots: { index: false, follow: false },
+}
+
+function StatBadge({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: LucideIcon
+  label: string
+  value: number
+}) {
+  return (
+    <div className="glass-subtle flex flex-col justify-between rounded-2xl px-3.5 py-3.5 shadow-glass sm:px-5 sm:py-4">
+      <div className="flex items-center gap-1.5 text-xs font-medium text-text-muted">
+        <Icon className="h-3.5 w-3.5" />
+        <span>{label}</span>
+      </div>
+      <span className="mt-1.5 text-2xl font-semibold tracking-tight text-text-primary tabular-nums sm:text-3xl">
+        {value}
+      </span>
+    </div>
+  )
 }
 
 async function DashboardStatsSection() {
@@ -23,35 +44,9 @@ async function DashboardStatsSection() {
 
   return (
     <div className="grid grid-cols-3 gap-3 sm:gap-4">
-      <div className="p-3.5 sm:p-4 rounded-xl border border-border bg-surface flex flex-col justify-between">
-        <div className="flex items-center gap-1.5 text-text-muted text-xs font-medium">
-          <Package className="h-3.5 w-3.5" />
-          <span>Boxes</span>
-        </div>
-        <span className="text-xl sm:text-2xl font-bold text-text-primary mt-1">
-          {stats.box_count}
-        </span>
-      </div>
-
-      <div className="p-3.5 sm:p-4 rounded-xl border border-border bg-surface flex flex-col justify-between">
-        <div className="flex items-center gap-1.5 text-text-muted text-xs font-medium">
-          <Layers className="h-3.5 w-3.5" />
-          <span>Items</span>
-        </div>
-        <span className="text-xl sm:text-2xl font-bold text-text-primary mt-1">
-          {stats.item_count}
-        </span>
-      </div>
-
-      <div className="p-3.5 sm:p-4 rounded-xl border border-border bg-surface flex flex-col justify-between">
-        <div className="flex items-center gap-1.5 text-text-muted text-xs font-medium">
-          <MapPin className="h-3.5 w-3.5" />
-          <span>Locations</span>
-        </div>
-        <span className="text-xl sm:text-2xl font-bold text-text-primary mt-1">
-          {stats.location_count}
-        </span>
-      </div>
+      <StatBadge icon={Package} label="Boxes" value={stats.box_count} />
+      <StatBadge icon={Layers} label="Items" value={stats.item_count} />
+      <StatBadge icon={MapPin} label="Locations" value={stats.location_count} />
     </div>
   )
 }
@@ -62,7 +57,7 @@ async function RecentBoxesSection() {
 
   if (boxes.length === 0) {
     return (
-      <div className="py-8 bg-surface rounded-xl border border-border">
+      <div className="glass rounded-2xl py-10 shadow-glass">
         <EmptyState
           title="Your storage is empty"
           description="Add your first box to start building your storage map."
@@ -74,53 +69,49 @@ async function RecentBoxesSection() {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-text-primary">Recently Added</h2>
+    <section className="space-y-4">
+      <div className="flex items-baseline justify-between">
+        <h2 className="text-lg font-semibold tracking-tight text-text-primary">
+          Recently added
+        </h2>
         <Link
           href="/boxes"
-          className="text-xs font-semibold text-primary hover:text-primary-hover underline-offset-4 hover:underline"
+          className="rounded text-xs font-semibold text-primary underline-offset-4 hover:underline"
         >
           View all
         </Link>
       </div>
       <BoxGrid boxes={boxes} />
-    </div>
+    </section>
   )
 }
 
 export default async function DashboardPage() {
   return (
     <PageContainer>
-      <div className="space-y-6 md:space-y-8 pb-8">
-        {/* Header / Greeting */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-text-primary tracking-tight">
-              BoxMap
-            </h1>
-            <p className="text-sm text-text-secondary">Know what&apos;s where.</p>
+      <div className="space-y-8 md:space-y-10">
+        {/*
+          The search panel is the page's dominant surface — the primary
+          "Add Box" action lives in the sidebar (md+) / bottom-nav FAB
+          (below md) and is deliberately not repeated here.
+        */}
+        <section className="glass rounded-3xl p-6 shadow-glass-lg sm:p-8">
+          <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+            Know what&apos;s where.
+          </h1>
+          <p className="mt-1.5 text-sm text-text-secondary">
+            Search every item across every box you&apos;ve catalogued.
+          </p>
+
+          <div className="mt-6">
+            <SearchInput placeholder="What are you looking for?" />
           </div>
+        </section>
 
-          <Link href="/boxes/new" className="hidden sm:inline-flex">
-            <Button className="gap-2 font-semibold">
-              <Plus className="h-4 w-4" />
-              Add Box
-            </Button>
-          </Link>
-        </div>
-
-        {/* Search Bar - Visually Dominant */}
-        <div className="w-full">
-          <SearchInput placeholder="What are you looking for?" />
-        </div>
-
-        {/* Quick Stats */}
         <Suspense fallback={<StatsSkeleton />}>
           <DashboardStatsSection />
         </Suspense>
 
-        {/* Recently Added Boxes */}
         <Suspense fallback={<BoxGridSkeleton count={6} />}>
           <RecentBoxesSection />
         </Suspense>

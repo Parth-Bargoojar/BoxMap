@@ -2,9 +2,23 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/*
+ * BoxMap design system — Apple-inspired glassmorphism.
+ *
+ * Tailwind v4 resolves the theme from THIS file (`@theme`), not from
+ * tailwind.config.ts (v4 no longer auto-loads a JS config). Add or change
+ * design tokens here.
+ */
+
+/* Matches `.dark` itself as well as its descendants, so `dark:` works on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ */
+/* Theme                                                               */
+/* ------------------------------------------------------------------ */
 
 @theme inline {
+  /* BoxMap palette */
   --color-background: var(--background);
   --color-foreground: var(--text-primary);
   --color-primary: var(--primary);
@@ -29,77 +43,355 @@
   --color-ring: var(--ring);
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
-  
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  
-  --radius-xs: 4px;
-  --radius-sm: 6px;
+
+  /*
+   * shadcn/base-ui primitive tokens. components/ui/* reference these
+   * (bg-card, text-primary-foreground, bg-popover, bg-muted, …); without
+   * them those utilities generate no CSS and the primitives render
+   * transparent/unreadable.
+   */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  /* Glass */
+  --color-glass: var(--glass-bg);
+  --color-glass-strong: var(--glass-bg-strong);
+  --color-glass-subtle: var(--glass-bg-subtle);
+  --color-glass-border: var(--glass-border);
+  --color-glass-hairline: var(--glass-hairline);
+
+  --font-sans:
+    var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Apple-ish continuous corners */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
   --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 28px;
   --radius-full: 9999px;
-  --radius: 10px;
+  --radius: 12px;
+
+  /*
+   * Multi-layered glass elevation. Declared as theme shadows (not a custom
+   * `box-shadow` utility) so they set `--tw-shadow` and therefore compose
+   * with `ring-*` instead of being overwritten by it.
+   */
+  --shadow-glass: var(--glass-shadow), var(--glass-shadow-inset);
+  --shadow-glass-lg: var(--glass-shadow-lg), var(--glass-shadow-inset);
 }
+
+/* ------------------------------------------------------------------ */
+/* Light                                                               */
+/* ------------------------------------------------------------------ */
 
 :root {
-  --primary: #4F46E5;
-  --primary-hover: #4338CA;
-  --primary-soft: #EEF2FF;
+  color-scheme: light;
+
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-soft: #eef2ff;
   --secondary: #475569;
-  --background: #F8FAFC;
-  --surface: #FFFFFF;
-  --surface-secondary: #F8FAFC;
-  --border: #E2E8F0;
-  --border-strong: #CBD5E1;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-  --text-disabled: #94A3B8;
-  --success: #16A34A;
-  --success-soft: #F0FDF4;
-  --warning: #D97706;
-  --warning-soft: #FFFBEB;
-  --error: #DC2626;
-  --error-soft: #FEF2F2;
-  --info: #2563EB;
-  --info-soft: #EFF6FF;
-  --input: #E2E8F0;
-  --ring: #4F46E5;
+  --background: #f2f4fa;
+  --surface: #ffffff;
+  --surface-secondary: #f1f5f9;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  /* Text tuned for AA contrast on translucent glass, not just on white. */
+  --text-primary: #0b1220; /* 17.4:1 on white */
+  --text-secondary: #3f4a5f; /* 8.9:1 */
+  --text-muted: #566072; /* 6.2:1 */
+  --text-disabled: #94a3b8;
+
+  --success: #15803d;
+  --success-soft: #f0fdf4;
+  --warning: #b45309;
+  --warning-soft: #fffbeb;
+  --error: #dc2626;
+  --error-soft: #fef2f2;
+  --info: #2563eb;
+  --info-soft: #eff6ff;
+  --input: #dbe2ec;
+  --ring: #4f46e5;
+
+  /* shadcn primitives → BoxMap palette */
+  --card: var(--glass-bg);
+  --card-foreground: var(--text-primary);
+  --popover: var(--glass-bg-strong);
+  --popover-foreground: var(--text-primary);
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --muted: var(--surface-secondary);
+  --muted-foreground: var(--text-muted);
+  --accent: #eef2ff;
+  --accent-foreground: #312e81;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-strong: rgba(255, 255, 255, 0.82);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.42);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --glass-hairline: rgba(15, 23, 42, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.9);
+  --glass-blur: 20px;
+  --glass-saturate: 180%;
+
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+  --glass-shadow-lg:
+    0 16px 48px -12px rgba(15, 23, 42, 0.16),
+    0 4px 12px -4px rgba(15, 23, 42, 0.06);
+  --glass-shadow-inset: inset 0 1px 0 0 var(--glass-highlight);
+
+  /* Ambient backdrop — glass needs something behind it to refract. */
+  --ambient-1: rgba(99, 102, 241, 0.22);
+  --ambient-2: rgba(56, 189, 248, 0.18);
+  --ambient-3: rgba(168, 85, 247, 0.16);
 }
 
+/* ------------------------------------------------------------------ */
+/* Dark                                                                */
+/* ------------------------------------------------------------------ */
+
 .dark {
-  --primary: #818CF8;
-  --primary-hover: #A5B4FC;
-  --primary-soft: #1E1B4B;
-  --background: #0F172A;
-  --surface: #111827;
-  --surface-secondary: #1E293B;
-  --border: #334155;
-  --border-strong: #475569;
-  --text-primary: #F8FAFC;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
-  --text-disabled: #64748B;
-  --success: #4ADE80;
-  --success-soft: #F0FDF4; /* Falling back to light mode soft colors if dark not specified, though usually we'd have dark soft colors. I'll stick to what was given or reasonable fallbacks. Wait, the prompt says "exact hex values from Design.md". If they are not specified for dark mode, I will just leave them or use a fallback. */
-  --warning: #FBBF24;
-  --warning-soft: #FFFBEB;
-  --error: #F87171;
-  --error-soft: #FEF2F2;
-  --info: #60A5FA;
-  --info-soft: #EFF6FF;
-  --input: #334155;
-  --ring: #818CF8;
+  color-scheme: dark;
+
+  --primary: #818cf8;
+  --primary-hover: #a5b4fc;
+  --primary-soft: #262046;
+  --secondary: #3f4655;
+  --background: #08080c;
+  --surface: #131318;
+  --surface-secondary: #1c1c23;
+  --border: #2b2b33;
+  --border-strong: #3d3d47;
+
+  --text-primary: #f5f5f7; /* Apple off-white */
+  --text-secondary: #c9cbd4;
+  --text-muted: #9b9ea9; /* 7.1:1 on --surface */
+  --text-disabled: #6b6e79;
+
+  --success: #4ade80;
+  --success-soft: #10251a;
+  --warning: #fbbf24;
+  --warning-soft: #2a1f08;
+  --error: #f87171;
+  --error-soft: #2a1414;
+  --info: #60a5fa;
+  --info-soft: #0f1e33;
+  --input: #33333d;
+  --ring: #818cf8;
+
+  --card: var(--glass-bg);
+  --card-foreground: var(--text-primary);
+  --popover: var(--glass-bg-strong);
+  --popover-foreground: var(--text-primary);
+  --primary-foreground: #14142b;
+  --secondary-foreground: #f5f5f7;
+  --muted: var(--surface-secondary);
+  --muted-foreground: var(--text-muted);
+  --accent: rgba(255, 255, 255, 0.08);
+  --accent-foreground: #f5f5f7;
+  --destructive: #f87171;
+  --destructive-foreground: #2a0f0f;
+
+  --glass-bg: rgba(30, 30, 34, 0.6);
+  --glass-bg-strong: rgba(32, 32, 38, 0.82);
+  --glass-bg-subtle: rgba(26, 26, 31, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-hairline: rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-shadow-lg:
+    0 16px 48px -12px rgba(0, 0, 0, 0.6), 0 4px 12px -4px rgba(0, 0, 0, 0.45);
+  --glass-shadow-inset: inset 0 1px 0 0 var(--glass-highlight);
+
+  --ambient-1: rgba(99, 102, 241, 0.2);
+  --ambient-2: rgba(14, 165, 233, 0.14);
+  --ambient-3: rgba(168, 85, 247, 0.16);
 }
+
+/* ------------------------------------------------------------------ */
+/* Glass utilities                                                     */
+/* ------------------------------------------------------------------ */
+
+/*
+ * These set background + blur + border only. Elevation is applied separately
+ * with `shadow-glass` / `shadow-glass-lg` so it composes with `ring-*`.
+ *
+ * Declare ONLY the unprefixed `backdrop-filter`. Lightning CSS emits the
+ * `-webkit-` prefix from the browserslist targets; writing both by hand makes
+ * it dedupe the pair down to the `-webkit-` one alone, which silently drops
+ * the blur in Firefox (unprefixed-only since 103).
+ */
+
+@utility glass {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+}
+
+@utility glass-strong {
+  background-color: var(--glass-bg-strong);
+  backdrop-filter: blur(28px) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+}
+
+@utility glass-subtle {
+  background-color: var(--glass-bg-subtle);
+  backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid var(--glass-hairline);
+}
+
+/* Chrome (nav bars, headers): blurred, hairline edge, no lift. */
+@utility glass-chrome {
+  background-color: var(--glass-bg-strong);
+  backdrop-filter: blur(24px) saturate(var(--glass-saturate));
+}
+
+/* Form fields sitting on glass need their own, slightly more opaque plate. */
+@utility glass-field {
+  background-color: var(--glass-bg-strong);
+  backdrop-filter: blur(12px) saturate(140%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-text-primary;
-  }
+
   html {
     @apply font-sans;
+    background-color: var(--background);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply text-text-primary;
+    background-color: transparent;
+    position: relative;
+  }
+
+  /* Ambient mesh: gives the frosted panels something to refract. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        ellipse 80% 60% at 12% 8%,
+        var(--ambient-1),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 70% 55% at 88% 12%,
+        var(--ambient-2),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 90% 70% at 50% 100%,
+        var(--ambient-3),
+        transparent 65%
+      );
+  }
+
+  /* Apple-style focus ring */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--primary) 25%, transparent);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Primitive slots — make components/ui/* glassy without touching every  */
+/* call site. Utilities still win over these (components < utilities).  */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  /*
+   * Only `backdrop-filter` and `--tw-shadow` are set here: neither is claimed
+   * by the utilities already on these primitives, so nothing is clobbered.
+   * `--tw-shadow` feeds the `ring-1` box-shadow chain the primitives declare.
+   */
+  [data-slot="card"] {
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    --tw-shadow: var(--glass-shadow), var(--glass-shadow-inset);
+  }
+
+  [data-slot="dialog-content"],
+  [data-slot="dropdown-menu-content"] {
+    backdrop-filter: blur(28px) saturate(var(--glass-saturate));
+    --tw-shadow: var(--glass-shadow-lg), var(--glass-shadow-inset);
+  }
+
+  [data-slot="dialog-overlay"] {
+    background-color: color-mix(in srgb, var(--background) 45%, transparent);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Accessibility fallbacks                                             */
+/* ------------------------------------------------------------------ */
+
+/* No backdrop-filter support → fall back to opaque surfaces. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root,
+  .dark {
+    --glass-bg: var(--surface);
+    --glass-bg-strong: var(--surface);
+    --glass-bg-subtle: var(--surface);
+  }
+}
+
+/* Respect the OS "reduce transparency" setting. */
+@media (prefers-reduced-transparency: reduce) {
+  :root,
+  .dark {
+    --glass-bg: var(--surface);
+    --glass-bg-strong: var(--surface);
+    --glass-bg-subtle: var(--surface);
+    --glass-blur: 0px;
+  }
+
+  body::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -50,33 +50,40 @@ function SearchContent() {
 
   return (
     <div className="space-y-6">
-      {/* Search Input Bar */}
-      <SearchInput defaultValue={queryParam} placeholder="Search items, boxes, or locations..." autoFocus />
+      {/* Matches the dashboard's search panel */}
+      <div className="glass rounded-3xl p-5 shadow-glass-lg sm:p-6">
+        <SearchInput
+          defaultValue={queryParam}
+          placeholder="Search items, boxes, or locations..."
+          autoFocus
+        />
+      </div>
 
-      {/* Search Content States per Design.md 10.7 */}
       {loading && (
-        <div className="py-12 text-center space-y-3 bg-surface rounded-xl border border-border">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+        <div className="glass space-y-3 rounded-2xl py-14 text-center shadow-glass">
+          <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
           <p className="text-sm font-medium text-text-secondary">Searching inventory...</p>
         </div>
       )}
 
       {!loading && error && (
-        <Card className="p-6 bg-error-soft border-error/20 text-center space-y-2">
-          <AlertCircle className="h-8 w-8 text-error mx-auto" />
-          <h3 className="font-bold text-error">Search Error</h3>
+        <Card className="border-error/20 space-y-2 py-8 text-center shadow-glass">
+          <AlertCircle className="mx-auto h-8 w-8 text-error" />
+          <h3 className="font-semibold text-error">Search error</h3>
           <p className="text-sm text-text-secondary">{error}</p>
         </Card>
       )}
 
       {!loading && !error && !queryParam.trim() && (
-        <div className="py-16 text-center space-y-3 bg-surface rounded-xl border border-border max-w-[480px] mx-auto">
-          <div className="w-12 h-12 rounded-full bg-primary-soft text-primary flex items-center justify-center mx-auto">
+        <div className="glass mx-auto max-w-[480px] space-y-3 rounded-2xl px-6 py-16 text-center shadow-glass">
+          <div className="glass-subtle mx-auto flex h-14 w-14 items-center justify-center rounded-2xl text-primary shadow-glass">
             <Search className="h-6 w-6" />
           </div>
           <div>
-            <h3 className="font-bold text-base text-text-primary">Search your inventory</h3>
-            <p className="text-xs text-text-secondary mt-1">
+            <h3 className="font-semibold tracking-tight text-text-primary">
+              Search your inventory
+            </h3>
+            <p className="mt-1 text-xs text-text-secondary">
               Type an item name to instantly see which physical box and room it is stored in.
             </p>
           </div>
@@ -84,11 +91,11 @@ function SearchContent() {
       )}
 
       {!loading && !error && queryParam.trim() !== '' && effectiveResults.length === 0 && (
-        <div className="py-12 text-center space-y-3 bg-surface rounded-xl border border-border max-w-[480px] mx-auto">
-          <PackageSearch className="h-10 w-10 text-text-muted mx-auto stroke-[1.5]" />
+        <div className="glass mx-auto max-w-[480px] space-y-3 rounded-2xl px-6 py-14 text-center shadow-glass">
+          <PackageSearch className="mx-auto h-10 w-10 stroke-[1.5] text-text-muted" />
           <div>
-            <h3 className="font-bold text-base text-text-primary">No items found</h3>
-            <p className="text-xs text-text-secondary mt-1">
+            <h3 className="font-semibold tracking-tight text-text-primary">No items found</h3>
+            <p className="mt-1 text-xs text-text-secondary">
               No items match &quot;{queryParam}&quot;. Try a different search term.
             </p>
           </div>
@@ -97,9 +104,10 @@ function SearchContent() {
 
       {!loading && !error && effectiveResults.length > 0 && (
         <div className="space-y-3">
-          <div className="flex items-center justify-between text-xs text-text-muted font-medium px-1">
-            <span>Found {effectiveResults.length} {effectiveResults.length === 1 ? 'result' : 'results'} for &quot;{queryParam}&quot;</span>
-          </div>
+          <p className="px-1 text-xs font-medium text-text-muted">
+            Found {effectiveResults.length}{' '}
+            {effectiveResults.length === 1 ? 'result' : 'results'} for &quot;{queryParam}&quot;
+          </p>
           <SearchResults results={effectiveResults} />
         </div>
       )}
@@ -110,17 +118,19 @@ function SearchContent() {
 export default function SearchPage() {
   return (
     <PageContainer>
-      <div className="space-y-6 max-w-[720px] mx-auto pb-12">
+      <div className="mx-auto max-w-[760px] space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary tracking-tight">
+          <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
             Inventory Search
           </h1>
-          <p className="text-sm text-text-secondary">Instantly locate items across all physical boxes</p>
+          <p className="mt-1 text-sm text-text-secondary">
+            Instantly locate items across all physical boxes
+          </p>
         </div>
 
         <Suspense fallback={
           <div className="py-12 text-center">
-            <Loader2 className="h-6 w-6 animate-spin mx-auto text-primary" />
+            <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />
           </div>
         }>
           <SearchContent />

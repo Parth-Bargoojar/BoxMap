@@ -44,26 +44,32 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="w-full max-w-[420px] px-4 py-8">
-      <Card className="w-full shadow-sm border-border">
+    <div className="w-full max-w-[420px] py-8">
+      <Card className="w-full shadow-glass-lg">
         <CardHeader className="space-y-2 text-center">
           <div className="flex justify-center">
-            <span className="text-2xl font-bold text-primary tracking-tight">BoxMap</span>
+            <span className="text-2xl font-bold tracking-tight text-primary">BoxMap</span>
           </div>
-          <CardTitle className="text-xl font-bold text-text-primary">Reset your password</CardTitle>
-          <CardDescription className="text-text-secondary">
+          <CardTitle className="text-xl">Reset your password</CardTitle>
+          <CardDescription>
             Enter your email address and we&apos;ll send you instructions to reset your password.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {authError && (
-            <div className="p-3 text-sm text-error bg-error-soft rounded-md border border-error/20" role="alert">
+            <div
+              className="rounded-lg border border-error/20 bg-error-soft/80 p-3 text-sm text-error backdrop-blur-sm"
+              role="alert"
+            >
               {authError}
             </div>
           )}
 
           {successMsg && (
-            <div className="p-3 text-sm text-success bg-success-soft rounded-md border border-success/20" role="status">
+            <div
+              className="rounded-lg border border-success/20 bg-success-soft/80 p-3 text-sm text-success backdrop-blur-sm"
+              role="status"
+            >
               {successMsg}
             </div>
           )}
@@ -98,7 +104,7 @@ export default function ForgotPasswordPage() {
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-center border-t border-border pt-4">
+        <CardFooter className="mt-2 flex justify-center">
           <p className="text-xs text-text-secondary">
             Remembered your password?{' '}
             <Link href="/sign-in" className="font-semibold text-primary hover:text-primary-hover underline-offset-4 hover:underline">

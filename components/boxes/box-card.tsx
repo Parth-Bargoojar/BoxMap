@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { BoxWithDetails } from '@/types'
 import { LocationBadge } from '@/components/shared/location-badge'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Package } from 'lucide-react'
 
 interface BoxCardProps {
@@ -18,40 +18,45 @@ export function BoxCard({ box }: BoxCardProps) {
   const itemCount = box.items?.length || 0
 
   return (
-    <Link href={`/boxes/${box.id}`} className="block group">
-      <Card className="overflow-hidden border-border transition-all duration-200 group-hover:border-border-strong group-hover:shadow-md">
-        <div className="relative aspect-[4/3] w-full bg-surface-secondary flex items-center justify-center overflow-hidden">
+    <Link
+      href={`/boxes/${box.id}`}
+      className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+    >
+      {/* gap-0 py-0 removes the card's default vertical padding so the photo sits flush. */}
+      <Card className="gap-0 py-0 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-glass-lg">
+        <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden bg-surface-secondary">
           {photoUrl ? (
             <Image
               src={photoUrl}
               alt={box.name}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           ) : (
-            <div className="flex flex-col items-center justify-center text-text-muted gap-2">
+            <div className="flex flex-col items-center justify-center gap-2 text-text-muted">
               <Package className="h-10 w-10 stroke-[1.5]" />
               <span className="text-xs font-medium">No photo</span>
             </div>
           )}
-          <div className="absolute top-3 left-3 bg-surface/90 backdrop-blur-sm px-2.5 py-1 rounded-md border border-border text-xs font-semibold text-text-primary shadow-xs">
+
+          <span className="glass-strong absolute top-3 left-3 rounded-full px-2.5 py-1 text-xs font-semibold text-text-primary shadow-glass">
             {box.box_code}
-          </div>
+          </span>
         </div>
 
-        <CardContent className="p-4 space-y-2">
-          <h3 className="font-semibold text-base text-text-primary group-hover:text-primary transition-colors line-clamp-1">
+        <div className="space-y-3 p-4">
+          <h3 className="line-clamp-1 font-semibold tracking-tight text-text-primary transition-colors group-hover:text-primary">
             {box.name}
           </h3>
 
-          <div className="flex items-center justify-between gap-2 pt-1">
+          <div className="flex items-center justify-between gap-2">
             <LocationBadge location={box.location} />
-            <span className="text-xs font-medium text-text-muted shrink-0">
+            <span className="shrink-0 text-xs font-medium text-text-muted tabular-nums">
               {itemCount} {itemCount === 1 ? 'item' : 'items'}
             </span>
           </div>
-        </CardContent>
+        </div>
       </Card>
     </Link>
   )

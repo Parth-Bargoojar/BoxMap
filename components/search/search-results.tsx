@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { SearchResultItem } from '@/lib/services/search'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { ArrowRight, Layers } from 'lucide-react'
+import { Card } from '@/components/ui/card'
+import { ArrowRight, Layers, MapPin } from 'lucide-react'
 
 interface SearchResultsProps {
   results: SearchResultItem[]
@@ -34,75 +33,70 @@ export function SearchResults({ results }: SearchResultsProps) {
         const isMultiple = group.items.length > 1
 
         return (
-          <Card key={groupIdx} className="border-border overflow-hidden bg-surface">
+          <Card key={groupIdx} className="gap-0 py-0 shadow-glass">
             {isMultiple && (
-              <div className="bg-primary-soft/50 px-4 py-2.5 border-b border-border flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Layers className="h-4 w-4 text-primary" />
-                  <span className="font-bold text-sm text-text-primary">{group.itemName}</span>
+              <div className="flex items-center justify-between gap-3 border-b border-glass-hairline bg-primary-soft/40 px-4 py-3">
+                <div className="flex min-w-0 items-center gap-2">
+                  <Layers className="h-4 w-4 shrink-0 text-primary" />
+                  <span className="truncate text-sm font-semibold text-text-primary">
+                    {group.itemName}
+                  </span>
                 </div>
-                <span className="text-xs font-semibold text-primary bg-surface px-2 py-0.5 rounded-full border border-primary/20">
-                  {group.items.length} locations found
+                <span className="glass-strong shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold text-primary">
+                  {group.items.length} locations
                 </span>
               </div>
             )}
 
-            <CardContent className="p-0 divide-y divide-border">
+            <div className="divide-y divide-glass-hairline">
               {group.items.map((res) => {
                 const locationParts = res.location
                   ? [res.location.room, res.location.area, res.location.position].filter(Boolean)
                   : []
-                const locationText = locationParts.length > 0 ? locationParts.join(' → ') : null
+                const locationText =
+                  locationParts.length > 0 ? locationParts.join(' → ') : null
 
                 return (
                   <Link
                     key={res.item.id}
                     href={`/boxes/${res.box.id}`}
-                    className="block p-4 hover:bg-surface-secondary/60 transition-colors group"
+                    className="group block px-4 py-4 transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
                   >
                     <div className="flex items-center justify-between gap-4">
-                      <div className="space-y-1.5 min-w-0 flex-1">
-                        {/* Item Name & Quantity */}
+                      <div className="min-w-0 flex-1 space-y-1.5">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-base text-text-primary group-hover:text-primary transition-colors truncate">
+                          <span className="truncate font-semibold tracking-tight text-text-primary transition-colors group-hover:text-primary">
                             {res.item.name}
                           </span>
-                          <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-surface-secondary text-text-secondary shrink-0">
-                            {res.item.quantity}x
+                          <span className="glass-subtle shrink-0 rounded-md px-1.5 py-0.5 text-xs font-semibold text-text-secondary tabular-nums">
+                            {res.item.quantity}&times;
                           </span>
                         </div>
 
-                        {/* Box Code & Box Name */}
                         <div className="flex items-center gap-2 text-xs font-medium text-text-secondary">
-                          <span className="font-bold text-primary bg-primary-soft px-2 py-0.5 rounded">
+                          <span className="rounded-md bg-primary-soft px-1.5 py-0.5 font-semibold text-primary-hover">
                             {res.box.box_code}
                           </span>
                           <span className="truncate">{res.box.name}</span>
                         </div>
 
-                        {/* Physical Location Hierarchy */}
                         {locationText && (
-                          <div className="text-xs text-text-muted flex items-center gap-1.5 pt-0.5 truncate">
-                            <span>📍</span>
-                            <span className="font-medium text-text-secondary truncate">{locationText}</span>
+                          <div className="flex items-center gap-1.5 truncate text-xs text-text-muted">
+                            <MapPin className="h-3 w-3 shrink-0" />
+                            <span className="truncate font-medium">{locationText}</span>
                           </div>
                         )}
                       </div>
 
-                      {/* View Box CTA */}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="gap-1 text-primary group-hover:bg-primary group-hover:text-white transition-colors shrink-0"
-                      >
-                        <span className="hidden sm:inline">View Box</span>
-                        <ArrowRight className="h-4 w-4" />
-                      </Button>
+                      <ArrowRight
+                        className="h-4 w-4 shrink-0 text-text-muted transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-primary"
+                        aria-hidden="true"
+                      />
                     </div>
                   </Link>
                 )
               })}
-            </CardContent>
+            </div>
           </Card>
         )
       })}

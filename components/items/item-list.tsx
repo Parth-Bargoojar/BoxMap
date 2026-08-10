@@ -53,16 +53,17 @@ export function ItemList({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-base text-text-primary">
-          Box Contents ({items.length})
-        </h3>
+        <h2 className="text-lg font-semibold tracking-tight text-text-primary">
+          Contents{' '}
+          <span className="font-normal text-text-muted tabular-nums">({items.length})</span>
+        </h2>
         {!isAddingInline && (
           <Button
             size="sm"
             variant="outline"
             onClick={() => setIsAddingInline(true)}
             aria-label="Add item to box"
-            className="gap-1.5 min-h-[36px]"
+            className="gap-1.5"
           >
             <Plus className="h-4 w-4" />
             Add Item
@@ -70,9 +71,12 @@ export function ItemList({
         )}
       </div>
 
-      {/* Inline Lightweight Add Item Form (PRD Flow 4) */}
+      {/* Inline add form */}
       {isAddingInline && (
-        <form onSubmit={handleCreateInline} className="p-3 bg-surface-secondary rounded-xl border border-primary/30 space-y-3">
+        <form
+          onSubmit={handleCreateInline}
+          className="glass space-y-3 rounded-2xl p-4 ring-1 ring-primary/25 shadow-glass"
+        >
           <div className="flex items-center gap-2">
             <Input
               value={newName}
@@ -81,7 +85,7 @@ export function ItemList({
               aria-label="New item name"
               autoFocus
               disabled={isSubmittingNew}
-              className="h-10 flex-1 text-sm bg-surface"
+              className="flex-1 text-sm"
             />
             <Input
               type="number"
@@ -90,7 +94,7 @@ export function ItemList({
               onChange={(e) => setNewQuantity(Math.max(1, parseInt(e.target.value) || 1))}
               aria-label="New item quantity"
               disabled={isSubmittingNew}
-              className="h-10 w-20 text-sm text-center bg-surface"
+              className="w-[72px] text-center text-sm"
             />
           </div>
           <div className="flex justify-end gap-2">
@@ -111,10 +115,9 @@ export function ItemList({
         </form>
       )}
 
-      {/* Items List */}
       {items.length === 0 && !isAddingInline ? (
-        <div className="p-6 text-center rounded-xl border border-dashed border-border bg-surface text-text-muted space-y-2">
-          <Package className="h-8 w-8 mx-auto stroke-[1.5]" />
+        <div className="glass-subtle space-y-2 rounded-2xl px-6 py-10 text-center text-text-muted">
+          <Package className="mx-auto h-8 w-8 stroke-[1.5]" />
           <p className="text-sm">No items logged in this box yet.</p>
         </div>
       ) : (

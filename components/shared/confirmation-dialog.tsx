@@ -36,14 +36,12 @@ export function ConfirmationDialog({
 }: ConfirmationDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[400px]">
+      <DialogContent className="sm:max-w-[420px]">
         <DialogHeader className="space-y-2">
-          <DialogTitle className="text-lg font-bold text-text-primary">{title}</DialogTitle>
-          <DialogDescription className="text-sm text-text-secondary">
-            {description}
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <DialogFooter className="flex flex-col-reverse sm:flex-row justify-end gap-2 pt-4">
+        <DialogFooter>
           <Button
             type="button"
             variant="outline"

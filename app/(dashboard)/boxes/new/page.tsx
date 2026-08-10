@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 export default function AddBoxPage() {
   return (
     <PageContainer>
-      <div className="space-y-6">
+      <div className="mx-auto max-w-[640px] space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary tracking-tight">
+          <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
             Add New Box
           </h1>
-          <p className="text-sm text-text-secondary">
+          <p className="mt-1 text-sm text-text-secondary">
             Create a physical box record and log its contents
           </p>
         </div>

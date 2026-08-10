@@ -73,25 +73,29 @@ export default function SignUpClient() {
   }
 
   return (
-    <Card className="w-full shadow-sm border-border">
+    <Card className="w-full shadow-glass-lg">
       <CardHeader className="space-y-2 text-center">
         <div className="flex justify-center">
-          <span className="text-2xl font-bold text-primary tracking-tight">BoxMap</span>
+          <span className="text-2xl font-bold tracking-tight text-primary">BoxMap</span>
         </div>
-        <CardTitle className="text-xl font-bold text-text-primary">Create an account</CardTitle>
-        <CardDescription className="text-text-secondary">
-          Get started by entering your email and password
-        </CardDescription>
+        <CardTitle className="text-xl">Create an account</CardTitle>
+        <CardDescription>Get started by entering your email and password</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {authError && (
-          <div className="p-3 text-sm text-error bg-error-soft rounded-md border border-error/20" role="alert">
+          <div
+            className="rounded-lg border border-error/20 bg-error-soft/80 p-3 text-sm text-error backdrop-blur-sm"
+            role="alert"
+          >
             {authError}
           </div>
         )}
 
         {successMsg && (
-          <div className="p-3 text-sm text-success bg-success-soft rounded-md border border-success/20" role="status">
+          <div
+            className="rounded-lg border border-success/20 bg-success-soft/80 p-3 text-sm text-success backdrop-blur-sm"
+            role="status"
+          >
             {successMsg}
           </div>
         )}
@@ -140,11 +144,13 @@ export default function SignUpClient() {
         </form>
 
         <div className="relative my-4">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-border" />
+          <div className="absolute inset-0 flex items-center" aria-hidden="true">
+            <span className="w-full border-t border-glass-hairline" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-surface px-2 text-text-muted">Or continue with</span>
+            <span className="glass-strong rounded-full px-3 py-0.5 text-text-muted">
+              Or continue with
+            </span>
           </div>
         </div>
 
@@ -180,7 +186,7 @@ export default function SignUpClient() {
           Continue with Google
         </Button>
       </CardContent>
-      <CardFooter className="flex justify-center border-t border-border pt-4">
+      <CardFooter className="mt-2 flex justify-center">
         <p className="text-xs text-text-secondary">
           Already have an account?{' '}
           <Link href="/sign-in" className="font-semibold text-primary hover:text-primary-hover underline-offset-4 hover:underline">

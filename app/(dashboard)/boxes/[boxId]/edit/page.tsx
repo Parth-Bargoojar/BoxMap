@@ -58,8 +58,8 @@ export default function EditBoxPage({ params }: EditBoxPageProps) {
   if (loading) {
     return (
       <PageContainer>
-        <div className="py-12 text-center space-y-3">
-          <Package className="h-8 w-8 animate-bounce mx-auto text-primary" />
+        <div className="glass mx-auto max-w-[640px] space-y-3 rounded-2xl py-16 text-center shadow-glass">
+          <Package className="mx-auto h-8 w-8 animate-bounce text-primary" />
           <p className="text-sm text-text-muted">Loading box for editing...</p>
         </div>
       </PageContainer>
@@ -69,10 +69,12 @@ export default function EditBoxPage({ params }: EditBoxPageProps) {
   if (error || !box) {
     return (
       <PageContainer>
-        <div className="py-12 text-center space-y-4">
-          <h2 className="text-xl font-bold text-text-primary">Box Not Found</h2>
+        <div className="glass mx-auto max-w-[480px] space-y-4 rounded-2xl px-6 py-14 text-center shadow-glass">
+          <h2 className="text-xl font-semibold tracking-tight text-text-primary">
+            Box not found
+          </h2>
           <p className="text-sm text-text-secondary">{error}</p>
-          <Link href="/boxes">
+          <Link href="/boxes" className="inline-block">
             <Button variant="outline">Back to Boxes</Button>
           </Link>
         </div>
@@ -82,24 +84,28 @@ export default function EditBoxPage({ params }: EditBoxPageProps) {
 
   return (
     <PageContainer>
-      <div className="space-y-6 max-w-[640px] mx-auto pb-12">
-        <div className="flex items-center justify-between">
+      <div className="mx-auto max-w-[640px] space-y-6">
+        <div className="flex items-center justify-between gap-3">
           <Link
             href={`/boxes/${boxId}`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-text-secondary hover:text-text-primary"
+            className="inline-flex items-center gap-1.5 rounded-lg text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <ArrowLeft className="h-4 w-4" />
             Cancel and Return
           </Link>
 
-          <span className="text-xs font-bold text-text-muted">{box.box_code}</span>
+          <span className="glass-subtle rounded-full px-2.5 py-1 text-xs font-semibold text-text-secondary">
+            {box.box_code}
+          </span>
         </div>
 
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary tracking-tight">
+          <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
             Edit {box.box_code}
           </h1>
-          <p className="text-sm text-text-secondary">Update box name, location, photo, or notes</p>
+          <p className="mt-1 text-sm text-text-secondary">
+            Update box name, location, photo, or notes
+          </p>
         </div>
 
         <BoxForm

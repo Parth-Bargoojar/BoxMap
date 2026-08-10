@@ -13,7 +13,7 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({
-  icon = <Package className="h-10 w-10 text-text-muted" />,
+  icon = <Package className="h-8 w-8 text-text-muted stroke-[1.5]" />,
   title = 'Your storage is empty',
   description = 'Add your first box to start building your storage map.',
   actionLabel = 'Add Box',
@@ -21,18 +21,18 @@ export function EmptyState({
   onAction,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center text-center p-8 max-w-[360px] mx-auto space-y-4">
-      <div className="w-16 h-16 rounded-full bg-surface-secondary flex items-center justify-center mb-1">
+    <div className="mx-auto flex max-w-[380px] flex-col items-center justify-center space-y-5 p-8 text-center">
+      <div className="glass-subtle flex h-16 w-16 items-center justify-center rounded-2xl shadow-glass">
         {icon}
       </div>
 
-      <div className="space-y-1">
-        <h3 className="text-lg font-bold text-text-primary">{title}</h3>
+      <div className="space-y-1.5">
+        <h3 className="text-lg font-semibold tracking-tight text-text-primary">{title}</h3>
         <p className="text-sm text-text-secondary">{description}</p>
       </div>
 
-      {actionLabel && (
-        actionHref ? (
+      {actionLabel &&
+        (actionHref ? (
           <Link href={actionHref}>
             <Button className="gap-2 font-semibold">
               <Plus className="h-4 w-4" />
@@ -44,8 +44,7 @@ export function EmptyState({
             <Plus className="h-4 w-4" />
             {actionLabel}
           </Button>
-        )
-      )}
+        ))}
     </div>
   )
 }

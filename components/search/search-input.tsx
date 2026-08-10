@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 
 interface SearchInputProps {
@@ -36,22 +37,25 @@ export function SearchInput({
   }
 
   return (
-    <form onSubmit={handleSearch} className={`relative w-full ${className}`}>
-      <div className="relative flex items-center w-full">
-        <Search className="absolute left-4 h-5 w-5 text-text-muted pointer-events-none" />
+    <form onSubmit={handleSearch} className={cn('relative w-full', className)} role="search">
+      <div className="relative flex w-full items-center">
+        {/* z-10: flex items paint in document order, so the translucent input
+            would otherwise cover these overlays. */}
+        <Search className="pointer-events-none absolute left-4 z-10 h-5 w-5 text-text-muted" />
         <Input
-          type="text"
+          type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
           autoFocus={autoFocus}
-          className="h-12 pl-12 pr-10 rounded-xl bg-surface border-border focus-visible:ring-primary text-base font-normal shadow-sm transition-all"
+          aria-label="Search your inventory"
+          className="glass-strong h-14 rounded-2xl border-glass-border pr-11 pl-12 text-base font-normal shadow-glass [&::-webkit-search-cancel-button]:appearance-none"
         />
         {query && (
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-3.5 p-1 rounded-full text-text-muted hover:text-text-primary hover:bg-surface-secondary"
+            className="absolute right-3 z-10 rounded-full p-1.5 text-text-muted transition-colors hover:bg-accent hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             aria-label="Clear search"
           >
             <X className="h-4 w-4" />

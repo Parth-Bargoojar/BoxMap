@@ -71,19 +71,20 @@ function SignInForm() {
   }
 
   return (
-    <Card className="w-full shadow-sm border-border">
+    <Card className="w-full shadow-glass-lg">
       <CardHeader className="space-y-2 text-center">
         <div className="flex justify-center">
-          <span className="text-2xl font-bold text-primary tracking-tight">BoxMap</span>
+          <span className="text-2xl font-bold tracking-tight text-primary">BoxMap</span>
         </div>
-        <CardTitle className="text-xl font-bold text-text-primary">Sign in to your account</CardTitle>
-        <CardDescription className="text-text-secondary">
-          Enter your credentials below to access your inventory
-        </CardDescription>
+        <CardTitle className="text-xl">Sign in to your account</CardTitle>
+        <CardDescription>Enter your credentials below to access your inventory</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {authError && (
-          <div className="p-3 text-sm text-error bg-error-soft rounded-md border border-error/20" role="alert">
+          <div
+            className="rounded-lg border border-error/20 bg-error-soft/80 p-3 text-sm text-error backdrop-blur-sm"
+            role="alert"
+          >
             {authError}
           </div>
         )}
@@ -140,11 +141,13 @@ function SignInForm() {
         </form>
 
         <div className="relative my-4">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-border" />
+          <div className="absolute inset-0 flex items-center" aria-hidden="true">
+            <span className="w-full border-t border-glass-hairline" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-surface px-2 text-text-muted">Or continue with</span>
+            <span className="glass-strong rounded-full px-3 py-0.5 text-text-muted">
+              Or continue with
+            </span>
           </div>
         </div>
 
@@ -180,7 +183,7 @@ function SignInForm() {
           Continue with Google
         </Button>
       </CardContent>
-      <CardFooter className="flex justify-center border-t border-border pt-4">
+      <CardFooter className="mt-2 flex justify-center">
         <p className="text-xs text-text-secondary">
           Don&apos;t have an account?{' '}
           <Link href="/sign-up" className="font-semibold text-primary hover:text-primary-hover underline-offset-4 hover:underline">
@@ -195,8 +198,8 @@ function SignInForm() {
 export default function SignInClient() {
   return (
     <Suspense fallback={
-      <Card className="w-full shadow-sm border-border p-6 text-center">
-        <Loader2 className="h-6 w-6 animate-spin mx-auto text-primary" />
+      <Card className="w-full py-10 text-center shadow-glass-lg">
+        <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />
       </Card>
     }>
       <SignInForm />
