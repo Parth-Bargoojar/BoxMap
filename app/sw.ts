@@ -2,8 +2,9 @@
 import { defaultCache } from "@serwist/next/worker"
 import { Serwist } from "serwist"
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare const self: ServiceWorkerGlobalScope & {
-  __SW_MANIFEST: any;
+  __SW_MANIFEST: any
 }
 
 const serwist = new Serwist({
