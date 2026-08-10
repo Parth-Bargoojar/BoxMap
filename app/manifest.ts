@@ -9,6 +9,7 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#4F46E5',
     background_color: '#F8FAFC',
     display: 'standalone',
+    display_override: ['window-controls-overlay', 'standalone'],
     protocol_handlers: [
       {
         protocol: 'web+boxmap',
